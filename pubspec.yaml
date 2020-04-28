@@ -21,8 +21,6 @@ dependencies:
   timeago: ^2.0.26
   cached_network_image:
   flutter_svg:
-  
-  cloud_firestore: ^0.13.5
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
