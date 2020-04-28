@@ -17,13 +17,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isAuth = false;
   PageController pageController;
-  int pageIndex=0;
+  int pageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    // Detects when user signed in
     pageController = PageController();
+    // Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
     }, onError: (err) {
@@ -70,7 +70,13 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Scaffold builAuthScreen() {
+  onTap(int pageIndex) {
+    pageController.jumpToPage(
+      pageIndex,
+    );
+  }
+
+  Scaffold buildAuthScreen() {
     return Scaffold(
       body: PageView(
         children: <Widget>[
@@ -85,10 +91,34 @@ class _HomeState extends State<Home> {
         physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: CupertinoTabBar(
-        currentIndex: 0,
-        
-      ),
+          currentIndex: pageIndex,
+          onTap: onTap,
+          activeColor: Theme.of(context).primaryColor,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.whatshot),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_active),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.photo_camera,
+                size: 35.0,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+            ),
+          ]),
     );
+    // return RaisedButton(
+    //   child: Text('Logout'),
+    //   onPressed: logout,
+    // );
   }
 
   Scaffold buildUnAuthScreen() {
@@ -140,6 +170,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return isAuth ? builAuthScreen() : buildUnAuthScreen();
+    return isAuth ? buildAuthScreen() : buildUnAuthScreen();
   }
 }
