@@ -17,6 +17,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isAuth = false;
   PageController pageController;
+  int pageIndex=0;
 
   @override
   void initState() {
@@ -81,6 +82,11 @@ class _HomeState extends State<Home> {
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        currentIndex: 0,
+        
       ),
     );
   }
