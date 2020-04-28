@@ -21,10 +21,10 @@ class _TimelineState extends State<Timeline> {
   }
 
   getUsers() async {
+    //using the compound queries
     final QuerySnapshot snapshot = await userRef
-        .where(
-          "isAdmin",
-          isEqualTo: true,
+        .limit(
+          2,
         )
         .getDocuments();
     snapshot.documents.forEach((DocumentSnapshot doc) {
@@ -33,6 +33,40 @@ class _TimelineState extends State<Timeline> {
       print(doc.exists);
     });
   }
+
+  // getUsers() async {
+  //   //using the compound queries
+  //   final QuerySnapshot snapshot = await userRef
+  //       .orderBy(
+  //         "postsCount",
+  //         descending: false,
+  //       )
+  //       .getDocuments();
+  //   snapshot.documents.forEach((DocumentSnapshot doc) {
+  //     print(doc.data);
+  //     print(doc.documentID);
+  //     print(doc.exists);
+  //   });
+  // }
+
+  // getUsers() async {
+  //   //using the compound queries
+  //   final QuerySnapshot snapshot = await userRef
+  //       .where(
+  //         "isAdmin",
+  //         isEqualTo: false,
+  //       )
+  //       .where(
+  //         "postsCount",
+  //         isLessThan: 3,
+  //       )
+  //       .getDocuments();
+  //   snapshot.documents.forEach((DocumentSnapshot doc) {
+  //     print(doc.data);
+  //     print(doc.documentID);
+  //     print(doc.exists);
+  //   });
+  // }
 
   // getUsers() {
   //   userRef.getDocuments().then((QuerySnapshot snapshot) {
