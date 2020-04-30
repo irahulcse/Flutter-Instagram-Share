@@ -12,11 +12,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = Firestore.instance.collection('users');
-final postsRef= Firestore.instance.collection('posts');
+final postsRef = Firestore.instance.collection('posts');
 final DateTime timestamp = DateTime.now();
 User currentUser;
 final StorageReference storageRef = FirebaseStorage.instance.ref();
-
 
 class Home extends StatefulWidget {
   @override
@@ -128,7 +127,7 @@ class _HomeState extends State<Home> {
           ActivityFeed(),
           Upload(currentUser: currentUser),
           Search(),
-          Profile(),
+          Profile(profileId: currentUser?.id),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
