@@ -93,8 +93,12 @@ class _UploadState extends State<Upload> {
     );
   }
 
+  buildUploadForm() {
+    return Text("File Loaded");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return buildSplashScreen();
+    return file == null ? buildSplashScreen() : buildUploadForm();
   }
 }
