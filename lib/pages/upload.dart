@@ -21,7 +21,7 @@ class Upload extends StatefulWidget {
 class _UploadState extends State<Upload> {
   File file;
   bool isUploading = false;
-  String postId=Uuid().v4();
+  String postId = Uuid().v4();
 
   handleTakePhoto() async {
     Navigator.pop(context);
@@ -115,12 +115,23 @@ class _UploadState extends State<Upload> {
     final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
     Im.Image imageFile = Im.decodeImage(file.readAsBytesSync());
+    final compressedImageFile = File('$path/img_$postId.jpg')
+      ..writeAsBytesSync(
+        Im.encodeJpg(
+          imageFile,
+          quality: 85,
+        ),
+      );
+      setState(() {
+        file= compressedImageFile;
+      });
   }
 
-  handleSubmit() {
+  handleSubmit() async {
     setState(() {
       isUploading = true;
     });
+    await compressImage();
   }
 
   Scaffold buildUploadForm() {
