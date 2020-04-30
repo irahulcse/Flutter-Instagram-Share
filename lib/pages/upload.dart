@@ -4,7 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:fluttershare/widgets/progress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as Im;
+import 'package:uuid/uuid.dart';
 
 class Upload extends StatefulWidget {
   final User currentUser;
@@ -16,6 +20,8 @@ class Upload extends StatefulWidget {
 
 class _UploadState extends State<Upload> {
   File file;
+  bool isUploading = false;
+  String postId=Uuid().v4();
 
   handleTakePhoto() async {
     Navigator.pop(context);
@@ -105,6 +111,18 @@ class _UploadState extends State<Upload> {
     });
   }
 
+  compressImage() async {
+    final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path;
+    Im.Image imageFile = Im.decodeImage(file.readAsBytesSync());
+  }
+
+  handleSubmit() {
+    setState(() {
+      isUploading = true;
+    });
+  }
+
   Scaffold buildUploadForm() {
     return Scaffold(
       appBar: AppBar(
@@ -129,12 +147,13 @@ class _UploadState extends State<Upload> {
                 fontSize: 20.0,
               ),
             ),
-            onPressed: () => print("hell"),
+            onPressed: isUploading ? null : () => handleSubmit(),
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
+          isUploading ? linearProgress() : Text(""),
           Container(
             height: 220.0,
             width: MediaQuery.of(context).size.width * 0.8,
