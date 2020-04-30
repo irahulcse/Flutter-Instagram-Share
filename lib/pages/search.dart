@@ -83,10 +83,11 @@ class _SearchState extends State<Search> {
         if (!snapshot.hasData) {
           return circularProgress();
         }
-        List<Text> searchResults = [];
+        List<UserResult> searchResults = [];
         snapshot.data.documents.forEach((doc) {
           User user = User.fromDocument(doc);
-          searchResults.add(Text(user.username));
+          UserResult searchResult = UserResult(user);
+          searchResults.add(searchResult);
           //searchResults.add(Text(user.photoUrl));
         });
         return ListView(
@@ -108,6 +109,9 @@ class _SearchState extends State<Search> {
 }
 
 class UserResult extends StatelessWidget {
+  final User user;
+
+  UserResult(this.user);
   @override
   Widget build(BuildContext context) {
     return Text("User Result");
