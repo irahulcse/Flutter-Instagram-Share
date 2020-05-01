@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:fluttershare/pages/edit_profile.dart';
 import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/header.dart';
 import 'package:fluttershare/widgets/progress.dart';
@@ -130,7 +131,13 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  editProfile() {}
+  editProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditProfile(currentUserId: currentUserId)));
+  }
+
   buildButton({String text, Function function}) {
     return Container(
       padding: EdgeInsets.only(
@@ -166,7 +173,7 @@ class _ProfileState extends State<Profile> {
   buildProfileButton() {
     // if we are viewing our own profle then only we should show.
     bool isProfileOwner = currentUserId == widget.profileId;
-    i(isProfileOwner) {
+    if (isProfileOwner) {
       return buildButton(
         text: "Edit Profile",
         function: editProfile,
