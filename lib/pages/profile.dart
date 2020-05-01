@@ -14,6 +14,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final String currentUserId = currentUser?.id;
   buildProfileHeader() {
     return FutureBuilder(
       future: usersRef.document(widget.profileId).get(),
@@ -129,11 +130,49 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  buildProfileButton() {
-    return Text("Profile Button");
+  editProfile() {}
+  buildButton({String text, Function function}) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 2.0,
+      ),
+      child: FlatButton(
+        onPressed: function,
+        child: Container(
+          width: 250.0,
+          height: 27.0,
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            border: Border.all(
+              color: Colors.blue,
+            ),
+            borderRadius: BorderRadius.circular(
+              5.0,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  
+  buildProfileButton() {
+    // if we are viewing our own profle then only we should show.
+    bool isProfileOwner = currentUserId == widget.profileId;
+    i(isProfileOwner) {
+      return buildButton(
+        text: "Edit Profile",
+        function: editProfile,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
