@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:fluttershare/models/user.dart';
@@ -17,6 +18,9 @@ class _EditProfileState extends State<EditProfile> {
   User user;
   TextEditingController displayNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
+  bool _bioValid = true;
+  bool _displayNameValid = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,9 +47,9 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Editing Profile',
+          'Edit Profile',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         actions: <Widget>[
@@ -70,6 +74,32 @@ class _EditProfileState extends State<EditProfile> {
                         padding: EdgeInsets.only(
                           top: 20.0,
                           bottom: 20.0,
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              CachedNetworkImageProvider(user.photoUrl),
+                          radius: 50.0,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(
+                          16.0,
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'Display Name',
+                                  style: TextStyle(
+                                    backgroundColor: Colors.black,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                                TextFormField()
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ],
