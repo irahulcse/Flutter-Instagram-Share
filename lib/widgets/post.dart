@@ -33,6 +33,24 @@ class Post extends StatefulWidget {
     );
   }
 
+  int getLikeCount() {
+    //if no likes return 0
+
+    if (likes == null) {
+      return 0;
+    }
+
+    int count = 0;
+    //if the key is explicitly set to true, add a like
+    likes.values.forEach((val) {
+      if (val == true) {
+        count += 1;
+      }
+    });
+
+    return count;
+  }
+
   @override
   _PostState createState() => _PostState();
 }
