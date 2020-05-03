@@ -198,7 +198,7 @@ class _ProfileState extends State<Profile> {
     }
     return Column(
       children: posts,
-    )
+    );
   }
 
   @override
