@@ -80,7 +80,7 @@ class _ProfileState extends State<Profile> {
   buildProfileButton() {
     // viewing your own profile - should show edit profile button
     bool isProfileOwner = currentUserId == widget.profileId;
-    if (isProfileOwner) { 
+    if (isProfileOwner) {
       return buildButton(text: "Edit Profile", function: editProfile);
     }
   }
@@ -162,13 +162,24 @@ class _ProfileState extends State<Profile> {
       },
     );
   }
+  
+
+  buildProfilePosts(){
+    
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, titleText: "Profile"),
       body: ListView(
-        children: <Widget>[buildProfileHeader()],
+        children: <Widget>[
+          buildProfileHeader(),
+          Divider(
+            height: 0.0,
+          ),
+          buildProfilePosts(),
+        ],
       ),
     );
   }
