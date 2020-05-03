@@ -9,21 +9,18 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String username;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   submit() {
     final form = _formKey.currentState;
+
     if (form.validate()) {
       form.save();
-      _formKey.currentState.save();
-      SnackBar snackbar = SnackBar(content: Text("Welcome $username! "));
+      SnackBar snackbar = SnackBar(content: Text("Welcome $username!"));
       _scaffoldKey.currentState.showSnackBar(snackbar);
-      Timer(
-          Duration(
-            seconds: 2,
-          ), () {
+      Timer(Duration(seconds: 2), () {
         Navigator.pop(context, username);
       });
     }
@@ -33,7 +30,8 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext parentContext) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: header(context, titleText: "Set up your profile"),
+      appBar: header(context,
+          titleText: "Set up your profile", removeBackButton: true),
       body: ListView(
         children: <Widget>[
           Container(

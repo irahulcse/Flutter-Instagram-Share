@@ -47,19 +47,18 @@ class _EditProfileState extends State<EditProfile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: Text(
-            "Display Name",
-            style: TextStyle(color: Colors.grey),
-          ),
-        ),
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text(
+              "Display Name",
+              style: TextStyle(color: Colors.grey),
+            )),
         TextField(
           controller: displayNameController,
           decoration: InputDecoration(
             hintText: "Update Display Name",
             errorText: _displayNameValid ? null : "Display Name too short",
           ),
-        ),
+        )
       ],
     );
   }
@@ -98,17 +97,11 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (_displayNameValid && _bioValid) {
-      usersRef.document(widget.currentUserId).updateData(
-        {
-          "displayName": displayNameController.text,
-          "bio": bioController.text,
-        },
-      );
-      SnackBar snackbar = SnackBar(
-        content: Text(
-          "Profile updated!",
-        ),
-      );
+      usersRef.document(widget.currentUserId).updateData({
+        "displayName": displayNameController.text,
+        "bio": bioController.text,
+      });
+      SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
       _scaffoldKey.currentState.showSnackBar(snackbar);
     }
   }

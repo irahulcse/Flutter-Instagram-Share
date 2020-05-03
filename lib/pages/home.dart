@@ -7,15 +7,16 @@ import 'package:fluttershare/pages/activity_feed.dart';
 import 'package:fluttershare/pages/create_account.dart';
 import 'package:fluttershare/pages/profile.dart';
 import 'package:fluttershare/pages/search.dart';
+import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final StorageReference storageRef = FirebaseStorage.instance.ref();
 final usersRef = Firestore.instance.collection('users');
 final postsRef = Firestore.instance.collection('posts');
 final DateTime timestamp = DateTime.now();
 User currentUser;
-final StorageReference storageRef = FirebaseStorage.instance.ref();
 
 class Home extends StatefulWidget {
   @override
@@ -76,15 +77,13 @@ class _HomeState extends State<Home> {
         "email": user.email,
         "displayName": user.displayName,
         "bio": "",
-        "timestamp": timestamp,
+        "timestamp": timestamp
       });
+
       doc = await usersRef.document(user.id).get();
     }
 
     currentUser = User.fromDocument(doc);
-
-    print(currentUser);
-    print(currentUser.username);
   }
 
   @override
@@ -175,10 +174,10 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              'FlutterShare',
+              'Friend\'s Chat',
               style: TextStyle(
                 fontFamily: "Signatra",
-                fontSize: 90.0,
+                fontSize: 80.0,
                 color: Colors.white,
               ),
             ),

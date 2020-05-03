@@ -1,29 +1,27 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
-import 'package:fluttershare/pages/home.dart';
-import 'package:fluttershare/widgets/custom_image.dart';
+import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/widgets/progress.dart';
 
 class Post extends StatefulWidget {
   final String postId;
   final String ownerId;
-  final String description;
-  final String location;
-  final String mediaUrl;
-  final String timestamp;
   final String username;
+  final String location;
+  final String description;
+  final String mediaUrl;
   final dynamic likes;
 
   Post({
     this.postId,
     this.ownerId,
-    this.description,
+    this.username,
     this.location,
+    this.description,
     this.mediaUrl,
     this.likes,
-    this.username,
-    this.timestamp,
   });
 
   factory Post.fromDocument(DocumentSnapshot doc) {
@@ -31,6 +29,7 @@ class Post extends StatefulWidget {
       postId: doc['postId'],
       ownerId: doc['ownerId'],
       username: doc['username'],
+      location: doc['location'],
       description: doc['description'],
       mediaUrl: doc['mediaUrl'],
       likes: doc['likes'],
@@ -38,20 +37,17 @@ class Post extends StatefulWidget {
   }
 
   int getLikeCount(likes) {
-    //if no likes return 0
-
+    // if no likes, return 0
     if (likes == null) {
       return 0;
     }
-
     int count = 0;
-    //if the key is explicitly set to true, add a like
+    // if the key is explicitly set to true, add a like
     likes.values.forEach((val) {
       if (val == true) {
         count += 1;
       }
     });
-
     return count;
   }
 
@@ -71,23 +67,21 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   final String postId;
   final String ownerId;
-  final String description;
-  final String location;
-  final String mediaUrl;
-  final String timestamp;
   final String username;
-  int likeCount = 0;
+  final String location;
+  final String description;
+  final String mediaUrl;
+  int likeCount;
   Map likes;
 
   _PostState({
     this.postId,
     this.ownerId,
-    this.description,
+    this.username,
     this.location,
+    this.description,
     this.mediaUrl,
     this.likes,
-    this.username,
-    this.timestamp,
     this.likeCount,
   });
 
@@ -98,15 +92,14 @@ class _PostState extends State<Post> {
         if (!snapshot.hasData) {
           return circularProgress();
         }
-
         User user = User.fromDocument(snapshot.data);
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: cachedNetworkImage(user.photoUrl),
-            backgroundColor: Colors.green,
+            backgroundImage: CachedNetworkImageProvider(user.photoUrl),
+            backgroundColor: Colors.grey,
           ),
           title: GestureDetector(
-            onTap: () => print("showing profile"),
+            onTap: () => print('showing profile'),
             child: Text(
               user.username,
               style: TextStyle(
@@ -117,10 +110,8 @@ class _PostState extends State<Post> {
           ),
           subtitle: Text(location),
           trailing: IconButton(
+            onPressed: () => print('deleting post'),
             icon: Icon(Icons.more_vert),
-            onPressed: () => print(
-              "deleting the post",
-            ),
           ),
         );
       },
@@ -129,8 +120,9 @@ class _PostState extends State<Post> {
 
   buildPostImage() {
     return GestureDetector(
-      onDoubleTap: () => print("liking the post"),
+      onDoubleTap: () => print('liking post'),
       child: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
           Image.network(mediaUrl),
         ],
@@ -144,43 +136,32 @@ class _PostState extends State<Post> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                top: 40.0,
-                left: 20.0,
-              ),
-            ),
+            Padding(padding: EdgeInsets.only(top: 40.0, left: 20.0)),
             GestureDetector(
-              onTap: () => print("liking this image"),
+              onTap: () => print('liking post'),
               child: Icon(
                 Icons.favorite_border,
                 size: 28.0,
-                color: Colors.redAccent,
+                color: Colors.pink,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 20.0,
-              ),
-            ),
+            Padding(padding: EdgeInsets.only(right: 20.0)),
             GestureDetector(
-              onTap: () => print('showing comment'),
+              onTap: () => print('showing comments'),
               child: Icon(
                 Icons.chat,
                 size: 28.0,
                 color: Colors.blue[900],
               ),
-            )
+            ),
           ],
         ),
         Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(
-                left: 20.0,
-              ),
+              margin: EdgeInsets.only(left: 20.0),
               child: Text(
-                '$likeCount likes',
+                "$likeCount likes",
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -193,22 +174,16 @@ class _PostState extends State<Post> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(
-                left: 20.0,
-              ),
+              margin: EdgeInsets.only(left: 20.0),
               child: Text(
-                "$username",
+                "$username ",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            Expanded(
-              child: Text(
-                description,
-              ),
-            ),
+            Expanded(child: Text(description))
           ],
         ),
       ],
@@ -222,7 +197,7 @@ class _PostState extends State<Post> {
       children: <Widget>[
         buildPostHeader(),
         buildPostImage(),
-        buildPostFooter(),
+        buildPostFooter()
       ],
     );
   }

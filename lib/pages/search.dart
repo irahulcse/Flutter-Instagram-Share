@@ -17,7 +17,7 @@ class _SearchState extends State<Search> {
 
   handleSearch(String query) {
     Future<QuerySnapshot> users = usersRef
-        .where("username", isGreaterThanOrEqualTo: query)
+        .where("displayName", isGreaterThanOrEqualTo: query)
         .getDocuments();
     setState(() {
       searchResultsFuture = users;
@@ -89,7 +89,6 @@ class _SearchState extends State<Search> {
           User user = User.fromDocument(doc);
           UserResult searchResult = UserResult(user);
           searchResults.add(searchResult);
-          //searchResults.add(Text(user.photoUrl));
         });
         return ListView(
           children: searchResults,
@@ -113,6 +112,7 @@ class UserResult extends StatelessWidget {
   final User user;
 
   UserResult(this.user);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -128,16 +128,12 @@ class UserResult extends StatelessWidget {
               ),
               title: Text(
                 user.displayName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 user.username,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),

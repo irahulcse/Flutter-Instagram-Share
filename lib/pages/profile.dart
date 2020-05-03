@@ -33,13 +33,11 @@ class _ProfileState extends State<Profile> {
     setState(() {
       isLoading = true;
     });
-
     QuerySnapshot snapshot = await postsRef
         .document(widget.profileId)
         .collection('userPosts')
         .orderBy('timestamp', descending: true)
         .getDocuments();
-
     setState(() {
       isLoading = false;
       postCount = snapshot.documents.length;
@@ -78,14 +76,17 @@ class _ProfileState extends State<Profile> {
             builder: (context) => EditProfile(currentUserId: currentUserId)));
   }
 
+
+
   Container buildButton({String text, Function function}) {
     return Container(
       padding: EdgeInsets.only(top: 2.0),
       child: FlatButton(
         onPressed: function,
         child: Container(
-          width: 210.0,
-          height: 27.0,
+          //width: 200.0,
+          width: 200,
+          height: 30,
           child: Text(
             text,
             style: TextStyle(
@@ -193,7 +194,7 @@ class _ProfileState extends State<Profile> {
   }
 
   buildProfilePosts() {
-    if(isLoading){
+    if (isLoading) {
       return circularProgress();
     }
     return Column(
