@@ -10,12 +10,81 @@ class Profile extends StatefulWidget {
   final String profileId;
 
   Profile({this.profileId});
+
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
   final String currentUserId = currentUser?.id;
+
+  Column buildCountColumn(String label, int count) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          count.toString(),
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 4.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  editProfile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditProfile(currentUserId: currentUserId)));
+  }
+
+  Container buildButton({String text, Function function}) {
+    return Container(
+      padding: EdgeInsets.only(top: 2.0),
+      child: FlatButton(
+        onPressed: function,
+        child: Container(
+          width: 250.0,
+          height: 27.0,
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            border: Border.all(
+              color: Colors.blue,
+            ),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+      ),
+    );
+  }
+
+  buildProfileButton() {
+    // viewing your own profile - should show edit profile button
+    bool isProfileOwner = currentUserId == widget.profileId;
+    if (isProfileOwner) {
+      return buildButton(text: "Edit Profile", function: editProfile);
+    }
+  }
+
   buildProfileHeader() {
     return FutureBuilder(
       future: usersRef.document(widget.profileId).get(),
@@ -33,9 +102,7 @@ class _ProfileState extends State<Profile> {
                   CircleAvatar(
                     radius: 40.0,
                     backgroundColor: Colors.grey,
-                    backgroundImage: CachedNetworkImageProvider(
-                      user.photoUrl,
-                    ),
+                    backgroundImage: CachedNetworkImageProvider(user.photoUrl),
                   ),
                   Expanded(
                     flex: 1,
@@ -51,7 +118,7 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             buildProfileButton(),
                           ],
@@ -63,9 +130,7 @@ class _ProfileState extends State<Profile> {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(
-                  top: 12.0,
-                ),
+                padding: EdgeInsets.only(top: 12.0),
                 child: Text(
                   user.username,
                   style: TextStyle(
@@ -76,9 +141,7 @@ class _ProfileState extends State<Profile> {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(
-                  top: 4.0,
-                ),
+                padding: EdgeInsets.only(top: 4.0),
                 child: Text(
                   user.displayName,
                   style: TextStyle(
@@ -88,9 +151,7 @@ class _ProfileState extends State<Profile> {
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(
-                  top: 2.0,
-                ),
+                padding: EdgeInsets.only(top: 2.0),
                 child: Text(
                   user.bio,
                 ),
@@ -100,87 +161,6 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
-  }
-
-  buildCountColumn(String label, int count) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          count.toString(),
-          style: TextStyle(
-            fontSize: 22.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(
-            top: 4.0,
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  editProfile() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EditProfile(currentUserId: currentUserId)));
-  }
-
-  buildButton({String text, Function function}) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 2.0,
-      ),
-      child: FlatButton(
-        
-        onPressed: function,
-        child: Container(
-
-          width: 250.0,
-          height: 27.0,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            border: Border.all(
-              color: Colors.blue,
-            ),
-            borderRadius: BorderRadius.circular(
-              5.0,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  buildProfileButton() {
-    // if we are viewing our own profle then only we should show.
-    bool isProfileOwner = currentUserId == widget.profileId;
-    if (isProfileOwner) {
-      return buildButton(
-        text: "Edit Profile",
-        function: editProfile,
-      );
-    }
   }
 
   @override
