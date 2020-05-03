@@ -577,11 +577,12 @@ class _UploadState extends State<Upload>
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     List<Placemark> placemarks = await Geolocator()
         .placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark placemark = placemarks[0];
+    Placemark placemark = placemarks[0];  
     String completeAddress =
         '${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea}, ${placemark.administrativeArea} ${placemark.postalCode}, ${placemark.country}';
     print(completeAddress);
-    String formattedAddress = "${placemark.subLocality} ,${placemark.locality}, ${placemark.country}";
+    String formattedAddress =
+        "${placemark.subLocality} ,${placemark.locality}, ${placemark.country}";
     locationController.text = formattedAddress;
   }
 
