@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> {
       child: FlatButton(
         onPressed: function,
         child: Container(
-          width: 250.0,
+          width: 210.0,
           height: 27.0,
           child: Text(
             text,
@@ -80,7 +80,7 @@ class _ProfileState extends State<Profile> {
   buildProfileButton() {
     // viewing your own profile - should show edit profile button
     bool isProfileOwner = currentUserId == widget.profileId;
-    if (isProfileOwner) {
+    if (isProfileOwner) { 
       return buildButton(text: "Edit Profile", function: editProfile);
     }
   }
