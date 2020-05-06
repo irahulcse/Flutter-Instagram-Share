@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:animator/animator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:fluttershare/pages/comments.dart';
 import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/custom_image.dart';
 import 'package:fluttershare/widgets/progress.dart';
@@ -73,6 +77,7 @@ class _PostState extends State<Post> {
   final String location;
   final String description;
   final String mediaUrl;
+  bool showHeart = false;
   int likeCount;
   Map likes;
   bool isLiked;
@@ -145,6 +150,15 @@ class _PostState extends State<Post> {
         likeCount += 1;
         isLiked = true;
         likes[currentUserId] = true;
+        showHeart = true;
+      });
+      Timer(
+          Duration(
+            milliseconds: 500,
+          ), () {
+        setState(() {
+          showHeart = false;
+        });
       });
     }
   }
@@ -156,6 +170,27 @@ class _PostState extends State<Post> {
         alignment: Alignment.center,
         children: <Widget>[
           cachedNetworkImage(mediaUrl),
+          showHeart
+              ? Animator(
+                  duration: Duration(
+                    milliseconds: 500,
+                  ),
+                  tween: Tween(
+                    begin: 0.8,
+                    end: 1.4,
+                  ),
+                  curve: Curves.elasticOut,
+                  cycles: 0,
+                  builder: (anim) => Transform.scale(
+                    scale: anim.value,
+                    child: Icon(
+                      Icons.favorite,
+                      size: 80.0,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+                )
+              : Text(""),
         ],
       ),
     );
@@ -178,7 +213,12 @@ class _PostState extends State<Post> {
             ),
             Padding(padding: EdgeInsets.only(right: 20.0)),
             GestureDetector(
-              onTap: () => print('showing comments'),
+              onTap: () => showComments(
+                context,
+                postId: postId,
+                ownerId: ownerId,
+                mediaUrl: mediaUrl,
+              ),
               child: Icon(
                 Icons.chat,
                 size: 28.0,
@@ -234,4 +274,15 @@ class _PostState extends State<Post> {
       ],
     );
   }
+}
+
+showComments(BuildContext context,
+    {String postId, String ownerId, String mediaUrl}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) {
+    return Comments(
+      postId: postId,
+      postOwnerId: ownerId,
+      postMediaUrl: mediaUrl,
+    );
+  }));
 }
