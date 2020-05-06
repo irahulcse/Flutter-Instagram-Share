@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/header.dart';
 
 class Comments extends StatefulWidget {
@@ -20,6 +21,7 @@ class Comments extends StatefulWidget {
 }
 
 class CommentsState extends State<Comments> {
+  TextEditingController commentController;
   final String postId;
   final String postOwnerId;
   final String postMediaUrl;
@@ -34,6 +36,10 @@ class CommentsState extends State<Comments> {
     return Text("Comments");
   }
 
+  addComment(){
+    commentsRef.document()
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +49,17 @@ class CommentsState extends State<Comments> {
           Expanded(child: buildComments()),
           Divider(),
           ListTile(
-            title: TextFormField(),
+            title: TextFormField(
+              controller: commentController,
+              decoration: InputDecoration(
+                labelText: "write a comment",
+              ),
+            ),
+            trailing: OutlineButton(
+              onPressed: ()=> print("add a comments"),
+              borderSide: BorderSide.none,
+              child: Text("Post" ),
+            ),
           ),
         ],
       ),
