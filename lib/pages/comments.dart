@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/widgets/header.dart';
 
 class Comments extends StatefulWidget {
   final String postId;
@@ -32,7 +33,9 @@ class CommentsState extends State<Comments> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Comments');
+    return Scaffold(
+      appBar: header(context, titleText: "Comments"),
+    );
   }
 }
 
