@@ -30,11 +30,24 @@ class CommentsState extends State<Comments> {
     this.postMediaUrl,
   });
 
-
+buildComments(){
+  return Text("Comments");
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, titleText: "Comments"),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: buildComments()),
+          Divider(),
+          ListTile(
+            title: TextFormField(
+
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
