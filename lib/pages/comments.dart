@@ -11,7 +11,11 @@ class Comments extends StatefulWidget {
     this.postMediaUrl,
   });
   @override
-  CommentsState createState() => CommentsState();
+  CommentsState createState() => CommentsState(
+    this.postId,
+    this.postOwnerId,
+    this.postMediaUrl,
+  );
 }
 
 class CommentsState extends State<Comments> {
@@ -25,7 +29,7 @@ class CommentsState extends State<Comments> {
     this.postMediaUrl,
   });
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Text('Comments');
