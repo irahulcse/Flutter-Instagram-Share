@@ -13,10 +13,10 @@ class Comments extends StatefulWidget {
   });
   @override
   CommentsState createState() => CommentsState(
-    this.postId,
-    this.postOwnerId,
-    this.postMediaUrl,
-  );
+        postId: this.postId,
+        postOwnerId: this.postOwnerId,
+        postMediaUrl: this.postMediaUrl,
+      );
 }
 
 class CommentsState extends State<Comments> {
@@ -30,9 +30,10 @@ class CommentsState extends State<Comments> {
     this.postMediaUrl,
   });
 
-buildComments(){
-  return Text("Comments");
-}
+  buildComments() {
+    return Text("Comments");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +43,7 @@ buildComments(){
           Expanded(child: buildComments()),
           Divider(),
           ListTile(
-            title: TextFormField(
-
-            ),
+            title: TextFormField(),
           ),
         ],
       ),
