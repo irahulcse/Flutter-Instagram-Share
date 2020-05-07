@@ -78,9 +78,9 @@ class _PostState extends State<Post> {
   final String description;
   final String mediaUrl;
   bool showHeart = false;
+  bool isLiked;
   int likeCount;
   Map likes;
-  bool isLiked;
 
   _PostState({
     this.postId,
@@ -152,10 +152,7 @@ class _PostState extends State<Post> {
         likes[currentUserId] = true;
         showHeart = true;
       });
-      Timer(
-          Duration(
-            milliseconds: 500,
-          ), () {
+      Timer(Duration(milliseconds: 500), () {
         setState(() {
           showHeart = false;
         });
@@ -172,13 +169,8 @@ class _PostState extends State<Post> {
           cachedNetworkImage(mediaUrl),
           showHeart
               ? Animator(
-                  duration: Duration(
-                    milliseconds: 500,
-                  ),
-                  tween: Tween(
-                    begin: 0.8,
-                    end: 1.4,
-                  ),
+                  duration: Duration(milliseconds: 300),
+                  tween: Tween(begin: 0.8, end: 1.4),
                   curve: Curves.elasticOut,
                   cycles: 0,
                   builder: (anim) => Transform.scale(
@@ -186,7 +178,7 @@ class _PostState extends State<Post> {
                     child: Icon(
                       Icons.favorite,
                       size: 80.0,
-                      color: Colors.redAccent,
+                      color: Colors.red,
                     ),
                   ),
                 )
@@ -283,7 +275,6 @@ showComments(BuildContext context,
       postId: postId,
       postOwnerId: ownerId,
       postMediaUrl: mediaUrl,
-      
     );
   }));
 }

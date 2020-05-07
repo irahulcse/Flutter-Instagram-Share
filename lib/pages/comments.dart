@@ -16,6 +16,7 @@ class Comments extends StatefulWidget {
     this.postOwnerId,
     this.postMediaUrl,
   });
+
   @override
   CommentsState createState() => CommentsState(
         postId: this.postId,
@@ -25,7 +26,7 @@ class Comments extends StatefulWidget {
 }
 
 class CommentsState extends State<Comments> {
-  TextEditingController commentController;
+  TextEditingController commentController = TextEditingController();
   final String postId;
   final String postOwnerId;
   final String postMediaUrl;
@@ -38,31 +39,27 @@ class CommentsState extends State<Comments> {
 
   buildComments() {
     return StreamBuilder(
-      stream: commentsRef
-          .document(postId)
-          .collection('comments')
-          .orderBy(
-            timestamp,
-            descending: false,
-          )
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return circularProgress();
-        }
-      },
-    );
+        stream: commentsRef
+            .document(postId)
+            .collection('comments')
+            .orderBy("timestamp", descending: false)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return circularProgress();
+          }
+          List<Comment> comments = [];
+          snapshot.data.documents.forEach((doc) {
+            comments.add(Comment.fromDocument(doc));
+          });
+          return ListView(
+            children: comments,
+          );
+        });
   }
 
   addComment() {
-    commentsRef
-        .document(
-          postId,
-        )
-        .collection(
-          "comments",
-        )
-        .add({
+    commentsRef.document(postId).collection("comments").add({
       "username": currentUser.username,
       "comment": commentController.text,
       "timestamp": timestamp,
@@ -83,12 +80,10 @@ class CommentsState extends State<Comments> {
           ListTile(
             title: TextFormField(
               controller: commentController,
-              decoration: InputDecoration(
-                labelText: "write a comment",
-              ),
+              decoration: InputDecoration(labelText: "Write a comment..."),
             ),
             trailing: OutlineButton(
-              onPressed: () => print("add a comments"),
+              onPressed: addComment,
               borderSide: BorderSide.none,
               child: Text("Post"),
             ),
@@ -116,12 +111,14 @@ class Comment extends StatelessWidget {
 
   factory Comment.fromDocument(DocumentSnapshot doc) {
     return Comment(
-      userId: doc['userId'],
       username: doc['username'],
-      avatarUrl: doc['avatarUrl'],
+      userId: doc['userId'],
+      comment: doc['comment'],
       timestamp: doc['timestamp'],
+      avatarUrl: doc['avatarUrl'],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -131,11 +128,7 @@ class Comment extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(avatarUrl),
           ),
-          subtitle: Text(
-            timeago.format(
-              timestamp.toDate(),
-            ),
-          ),
+          subtitle: Text(timeago.format(timestamp.toDate())),
         ),
         Divider(),
       ],
