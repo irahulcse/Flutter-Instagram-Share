@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttershare/pages/home.dart';
 import 'package:fluttershare/widgets/header.dart';
 import 'package:fluttershare/widgets/progress.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatefulWidget {
   final String postId;
@@ -130,7 +131,13 @@ class Comment extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(avatarUrl),
           ),
+          subtitle: Text(
+            timeago.format(
+              timestamp.toDate(),
+            ),
+          ),
         ),
+        Divider(),
       ],
     );
   }
