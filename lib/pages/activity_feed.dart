@@ -47,6 +47,22 @@ class _ActivityFeedState extends State<ActivityFeed> {
 }
 
 class ActivityFeedItem extends StatelessWidget {
+  final String username;
+  final String userId;
+  final String type; //like // follow //comment
+  final String mediaUrl;
+  final String postId;
+  final String userProfileImg;
+  final String commentData;
+  final Timestamp timestamp;
+
+  ActivityFeedItem({
+    this.username,this.userId,this.type,this.mediaUrl,this.postId,this.userProfileImg,this.commentData,this.timestamp,
+  })
+factory ActivityFeedItem{
+
+}
+
   @override
   Widget build(BuildContext context) {
     return Text('Activity Feed Item');
