@@ -10,10 +10,11 @@ class _ActivityFeedState extends State<ActivityFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: header(
-      context,
-      titleText: "Activity Feed",
-    ));
+      appBar: header(
+        context,
+        titleText: "Activity Feed",
+      ),
+    );
   }
 }
 
