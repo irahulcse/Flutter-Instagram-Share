@@ -146,6 +146,7 @@ class _PostState extends State<Post> {
           .collection('userPosts')
           .document(postId)
           .updateData({'likes.$currentUserId': true});
+      
       setState(() {
         likeCount += 1;
         isLiked = true;
