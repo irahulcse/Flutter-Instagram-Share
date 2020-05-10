@@ -165,24 +165,31 @@ class _PostState extends State<Post> {
   }
 
   addLikeToActivityFeed() {
-    //add a notification to the postowners activity feed only
-    activityFeedRef
-        .document(ownerId)
-        .collection("feedItems")
-        .document(postId)
-        .setData({
-      "type": "like",
-      "username": currentUser.username,
-      "userId": currentUser.id,
-      "userProfileImg": currentUser.photoUrl,
-      "postId": postId,
-      "mediaUrl": mediaUrl,
-      "timestamp": timestamp,
-    });
+    //add a notification to the postowners activity feed only if comment made by other user (to avoid getting notification for our own like)
+
+    bool isNotPostOwner = currentUserId != ownerId;
+    if (isNotPostOwner) {
+      activityFeedRef
+          .document(ownerId)
+          .collection("feedItems")
+          .document(postId)
+          .setData({
+        "type": "like",
+        "username": currentUser.username,
+        "userId": currentUser.id,
+        "userProfileImg": currentUser.photoUrl,
+        "postId": postId,
+        "mediaUrl": mediaUrl,
+        "timestamp": timestamp,
+      });
+    }
   }
 
   removeLikeFromActivityFeed() {
-    activityFeedRef
+
+    bool isNotPostOwner = currentUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedRef
         .document(ownerId)
         .collection("feedItems")
         .document(postId)
@@ -192,6 +199,7 @@ class _PostState extends State<Post> {
         doc.reference.delete();
       }
     });
+    }
   }
 
   buildPostImage() {
