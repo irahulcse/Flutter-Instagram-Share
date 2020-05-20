@@ -34,8 +34,8 @@ class _ActivityFeedState extends State<ActivityFeed> {
       body: Container(
         child: FutureBuilder(
           future: getActivityFeed(),
-          builder: (context,snapshot){
-            if(!snapshot.hasData){
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
               return circularProgress();
             }
             return Text("Activity Feed");
@@ -57,11 +57,25 @@ class ActivityFeedItem extends StatelessWidget {
   final Timestamp timestamp;
 
   ActivityFeedItem({
-    this.username,this.userId,this.type,this.mediaUrl,this.postId,this.userProfileImg,this.commentData,this.timestamp,
-  })
-factory ActivityFeedItem{
+    this.username,
+    this.userId,
+    this.type,
+    this.mediaUrl,
+    this.postId,
+    this.userProfileImg,
+    this.commentData,
+    this.timestamp,
+  });
+// factory ActivityFeedItem{
+//good to go will be going to be the part of te land and one of 
+//best introverts are supposedly working towards making
+//the business come true
 
-}
+
+
+
+
+// }
 
   @override
   Widget build(BuildContext context) {
